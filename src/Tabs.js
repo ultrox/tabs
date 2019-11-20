@@ -1,21 +1,19 @@
 import React from 'react'
+import { TabsProvider, useTabsState, useTabsDispatch } from './tabs-context'
 
 // tabs will have all the state, like active index
 export function Tabs(props) {
-  const [index, setIndex] = React.useState(0)
-
-  const newChildren = React.Children.map(props.children, child => {
-    return React.cloneElement(child, {
-      activeIndex: index,
-      onSelectTab: setIndex,
-    })
-  })
-  return <div className="Tabs">{newChildren}</div>
+  return (
+    <TabsProvider>
+      <div className="Tabs">{props.children}</div>
+    </TabsProvider>
+  )
 }
 
 // responsible for rendering specific tab (will receive array of TabPanel)
 export function TabPanels(props) {
-  const { activeIndex } = props
+  const activeIndex = useTabsState()
+
   return <div className="panels">{props.children[activeIndex]}</div>
 }
 
@@ -26,10 +24,13 @@ export function TabPanel(props) {
 
 // children are arr of Tab
 export function TabList(props) {
+  const activeIndex = useTabsState()
+  const setActiveIndex = useTabsDispatch()
+
   const newChildren = React.Children.map(props.children, (child, i) => {
     return React.cloneElement(child, {
-      onSelect: _ => props.onSelectTab(i),
-      isActive: props.activeIndex === i,
+      onSelect: _ => setActiveIndex(i),
+      isActive: activeIndex === i,
     })
   })
 
