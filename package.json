@@ -1,15 +1,36 @@
 {
-  "name": "tabs",
-  "version": "0.1.0",
-  "private": true,
+  "name": "@ma.vu/tabs",
+  "version": "0.1.1",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ],
+  "author": "Marko Vujanic",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "license": "MIT",
+  "babel": {
+    "presets": [
+      "@babel/preset-react"
+    ]
+  },
+  "repository": "https://github.com/ultrox/tabs",
   "dependencies": {
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-icons": "^3.8.0",
-    "react-scripts": "3.2.0",
-    "styled-components": "^4.4.1"
+    "react-scripts": "3.2.0"
+  },
+  "devDependencies": {
+    "styled-components": "^4.4.1",
+    "@babel/cli": "^7.7.0",
+    "@babel/preset-react": "^7.7.0"
   },
   "scripts": {
+    "npm:build": "NODE_ENV=production rm -rf dist && mkdir dist && babel src/Tabs.js -d dist --copy-files",
+    "npm:live": "npm run npm:build && npm publish",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
