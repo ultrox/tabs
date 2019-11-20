@@ -1,6 +1,6 @@
 import './index.css'
 import React from 'react'
-import { Tabs, TabPanel, TabPanels, Tab, TabList } from './Tabs'
+import { Tabs, TabPanel, TabPanels, Tab, TabList } from './tabs-module/Tabs'
 
 import { TiCogOutline, TiChartBar, TiHeart, TiGift } from 'react-icons/ti'
 import * as text from './mocky-text'

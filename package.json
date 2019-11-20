@@ -1,6 +1,6 @@
 {
   "name": "@ma.vu/tabs",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publishConfig": {
     "access": "public"
   },
@@ -29,7 +29,7 @@
     "@babel/preset-react": "^7.7.0"
   },
   "scripts": {
-    "npm:build": "NODE_ENV=production rm -rf dist && mkdir dist && babel src/Tabs.js -d dist --copy-files",
+    "npm:build": "NODE_ENV=production rm -rf dist && mkdir dist && babel src/tabs-module -d dist --copy-files",
     "npm:live": "npm run npm:build && npm publish",
     "start": "react-scripts start",
     "build": "react-scripts build",
