@@ -1,0 +1,105 @@
+version: 2
+general_options: &general_options
+  docker:
+    - image: circleci/node:10.4.0
+  working_directory: ~/repo
+jobs:
+  checkout:
+    <<: *general_options
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "yarn.lock" }}
+      - run:
+          name: Install dependent packages
+          command: npm ci
+      - save_cache:
+          key: v1-dependencies-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+      - persist_to_workspace:
+          root: ~/repo
+          paths:
+            - .
+  lint:
+    <<: *general_options
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: Lint code
+          command: npm run lint
+  test:
+    <<: *general_options
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: Test code
+          command: npm test -- --ci --verbose --coverage
+  compile:
+    <<: *general_options
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: Compile TypeScript to JavaScript
+          command: npm run compile
+      - persist_to_workspace:
+          root: ~/repo
+          paths:
+            - .
+  publish:
+    <<: *general_options
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: Install can-npm-publish
+          command: sudo npm i -g can-npm-publish
+      - run:
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=$NPMJS_PUBLISH_TOKEN" > ~/repo/.npmrc
+      - deploy:
+          name: Publish package
+          command: |
+            if can-npm-publish; then
+                npm publish
+            else
+                echo "skipped"
+            fi
+workflows:
+  version: 2
+  default:
+    jobs:
+      - checkout:
+          filters:
+            tags:
+              only: /^v[0-9]+\.[0-9]+\.[0-9]+.*/
+      - lint:
+          filters:
+            tags:
+              only: /^v[0-9]+\.[0-9]+\.[0-9]+.*/
+          requires:
+            - checkout
+      - test:
+          filters:
+            tags:
+              only: /^v[0-9]+\.[0-9]+\.[0-9]+.*/
+          requires:
+            - checkout
+      - compile:
+          filters:
+            tags:
+              only: /^v[0-9]+\.[0-9]+\.[0-9]+.*/
+          requires:
+            - checkout
+      - publish:
+          filters:
+            tags:
+              only: /^v[0-9]+\.[0-9]+\.[0-9]+.*/
+          requires:
+            - lint
+            - test
+            - compile
