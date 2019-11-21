@@ -5,7 +5,7 @@ import { TabsProvider, useTabsState, useTabsDispatch } from './tabs-context'
 export function Tabs(props) {
   return (
     <TabsProvider>
-      <div className="Tabs">{props.children}</div>
+      <div className={props.className}>{props.children}</div>
     </TabsProvider>
   )
 }
@@ -13,8 +13,11 @@ export function Tabs(props) {
 // responsible for rendering specific tab (will receive array of TabPanel)
 export function TabPanels(props) {
   const activeIndex = useTabsState()
-
-  return <div className="panels">{props.children[activeIndex]}</div>
+  return (
+    <div className={props.className}>
+      {props.children[activeIndex]}
+    </div>
+  )
 }
 
 // TabList will receive array of Tab, from `Tabs`
@@ -34,7 +37,7 @@ export function TabList(props) {
     })
   })
 
-  return <div className="tabs">{newChildren}</div>
+  return <div className={props.className}>{newChildren}</div>
 }
 
 // Tab need to activate new active index
@@ -42,7 +45,7 @@ export function Tab(props) {
   return (
     <div
       onClick={props.onSelect}
-      className={props.isActive ? 'active tab' : 'tab'}>
+      className={props.className}>
       {props.children}
     </div>
   )
