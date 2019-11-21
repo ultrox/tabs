@@ -21,19 +21,20 @@
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-icons": "^3.8.0",
-    "react-scripts": "3.2.0"
+    "react-scripts": "3.2.0",
+    "rimraf": "^3.0.0"
   },
   "devDependencies": {
-    "styled-components": "^4.4.1",
     "@babel/cli": "^7.7.0",
-    "@babel/preset-react": "^7.7.0"
+    "@babel/preset-react": "^7.7.0",
+    "styled-components": "^4.4.1"
   },
   "scripts": {
     "compile": "NODE_ENV=production rimraf dist && mkdir dist && babel src/tabs-module -d dist --copy-files",
     "npm:live": "npm run npm:build && npm publish",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "echo OK",
+    "test": "jest",
     "lint": "eslint \"src/**/*.{js,jsx}\"",
     "check": "echo check",
     "eject": "react-scripts eject"
