@@ -3,8 +3,10 @@ import { TabsProvider, useTabsState, useTabsDispatch } from './tabs-context'
 
 // tabs will have all the state, like active index
 export function Tabs(props) {
+  const stateHook = React.useState(props.defaultValue || 0)
+
   return (
-    <TabsProvider>
+    <TabsProvider value={stateHook} >
       <div className={props.className}>{props.children}</div>
     </TabsProvider>
   )
@@ -13,11 +15,7 @@ export function Tabs(props) {
 // responsible for rendering specific tab (will receive array of TabPanel)
 export function TabPanels(props) {
   const activeIndex = useTabsState()
-  return (
-    <div className={props.className}>
-      {props.children[activeIndex]}
-    </div>
-  )
+  return <div className={props.className}>{props.children[activeIndex]}</div>
 }
 
 // TabList will receive array of Tab, from `Tabs`
@@ -43,9 +41,7 @@ export function TabList(props) {
 // Tab need to activate new active index
 export function Tab(props) {
   return (
-    <div
-      onClick={props.onSelect}
-      className={props.className}>
+    <div onClick={props.onSelect} className={props.className}>
       {props.children}
     </div>
   )

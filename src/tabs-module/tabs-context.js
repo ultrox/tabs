@@ -8,8 +8,8 @@ const TabsStateContext = React.createContext()
 const TabsDispatchContext = React.createContext()
 
 function TabsProvider(props) {
+  const [state, dispatch] = props.value;
   // default implicite state of 0
-  const [state, dispatch] = React.useState(0)
   return (
     <TabsStateContext.Provider value={state}>
       {/* premature optimization to avoid uneciserry rendering by using 2 context*/}

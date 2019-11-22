@@ -9,7 +9,7 @@ import * as text from './mocky-text'
 function App() {
   return (
     <div className="App">
-      <StyledTabs>
+      <StyledTabs defaultValue={0}>
         <div>
           <StyledTabList>
             <StyledTab><TiCogOutline /></StyledTab>
