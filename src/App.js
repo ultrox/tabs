@@ -7,9 +7,13 @@ import { TiCogOutline, TiChartBar, TiHeart, TiGift } from 'react-icons/ti'
 import * as text from './mocky-text'
 
 function App() {
+  const [activeIndex, setActiveIndex] = React.useState(0)
   return (
     <div className="App">
-      <StyledTabs defaultValue={0}>
+      <StyledTabs 
+        value={activeIndex}
+        onSelect={setActiveIndex}
+      >
         <div>
           <StyledTabList>
             <StyledTab><TiCogOutline /></StyledTab>
@@ -23,7 +27,12 @@ function App() {
             <TabPanel> {text.settings} </TabPanel>
             <TabPanel> {text.graph} </TabPanel>
             <TabPanel> {text.love} </TabPanel>
-            <TabPanel> {text.gift} </TabPanel>
+            <TabPanel> 
+              <button type="click" 
+                onClick={e => setActiveIndex(1)}>
+                Go to Chart
+              </button>
+            </TabPanel>
           </StyledPanels>
         </div>
       </StyledTabs>

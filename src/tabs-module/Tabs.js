@@ -1,12 +1,34 @@
 import React from 'react'
 import { TabsProvider, useTabsState, useTabsDispatch } from './tabs-context'
 
+const isControlable = (val, fn) => {
+  const isValValid = typeof val === 'number' && !Number.isNaN(val)
+  const isFnValid = typeof fn === 'function'
+
+  if (isValValid && isFnValid) {
+    return true
+  } else {
+    !isValValid &&
+      console.error(
+        `<Tabs> prop 'value': needs to be number but its ${typeof val}`,
+      )
+    !isFnValid &&
+      console.error(
+        `<Tabs> prop 'onSelect': needs to be function, but its ${typeof fn}`,
+      )
+    return false
+  }
+}
 // tabs will have all the state, like active index
 export function Tabs(props) {
   const stateHook = React.useState(props.defaultValue || 0)
+  // prettier-ignore
+  const value = isControlable(props.value, props.onSelect)
+    ? [props.value, props.onSelect] 
+    : stateHook
 
   return (
-    <TabsProvider value={stateHook} >
+    <TabsProvider value={value}>
       <div className={props.className}>{props.children}</div>
     </TabsProvider>
   )
